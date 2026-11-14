@@ -1,10 +1,5 @@
-import { API_URL } from "$app/env/private";
-
+import { API_URL } from "$lib/config";
 import type { Category, Product, ProductInput } from "$lib/types";
-
-function baseUrl(): string {
-	return API_URL.replace(/\/+$/, "");
-}
 
 export class ApiError extends Error {
 	status: number;
@@ -19,7 +14,7 @@ export class ApiError extends Error {
 }
 
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
-	const response = await fetch(`${baseUrl()}${path}`, {
+	const response = await fetch(`${API_URL}${path}`, {
 		...init,
 		headers: {
 			accept: "application/json",
