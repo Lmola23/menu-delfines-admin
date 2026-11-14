@@ -47,8 +47,20 @@ export function listProducts(): Promise<Product[]> {
 	return request<Product[]>("/api/products?available=all");
 }
 
-export function listCategories(): Promise<Category[]> {
-	return request<Category[]>("/api/categories");
+const CATEGORY_LABEL_FIXES: Record<string, { from: string; to: string }> = {
+	botellas: { from: "Botellas", to: "Tragos" },
+};
+
+export async function listCategories(): Promise<Category[]> {
+	const categories = await request<Category[]>("/api/categories");
+	// La categoría vende tragos, no botellas. El id se conserva para no romper
+	// los productos; cuando la API tenga la migración, el valor ya viene bien.
+	return categories.map((category) => {
+		const fix = CATEGORY_LABEL_FIXES[category.id];
+		return fix && category.label === fix.from
+			? { ...category, label: fix.to }
+			: category;
+	});
 }
 
 export function getProduct(id: number | string): Promise<Product> {
