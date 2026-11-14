@@ -23,6 +23,10 @@
 
 	const product = $derived(data.product);
 	const values = $derived(form?.values ?? productToValues(data.product));
+	const temporaryCocktailCategory = $derived(
+		product.category !== "cocteles" &&
+			["mojito-delfin", "daiquiri-fresa"].includes(product.slug),
+	);
 </script>
 
 <svelte:head>
@@ -49,6 +53,13 @@
 
 {#if form?.message}
 	<p class="alert" role="alert">{form.message}</p>
+{/if}
+
+{#if temporaryCocktailCategory}
+	<p class="alert" role="status">
+		Este cóctel se muestra en Cócteles en la carta, pero la base del VPS
+		todavía lo guarda en Tragos. Se moverá al desplegar la nueva base.
+	</p>
 {/if}
 
 <div class="detail-layout">
