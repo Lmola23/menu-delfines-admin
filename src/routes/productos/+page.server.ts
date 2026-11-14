@@ -8,6 +8,7 @@ import {
 } from "$lib/server/api";
 import { messageOf } from "$lib/server/errors";
 import { normalize } from "$lib/normalize";
+import { priceValue } from "$lib/price";
 import type { ProductSummary } from "$lib/types";
 
 type Estado = "todos" | "disponibles" | "agotados";
@@ -85,6 +86,7 @@ export const load = async ({ url }) => {
 				categoryLabel,
 				price: product.price,
 				currency: product.currency,
+				priceLabel: `${priceValue(product.price, product.detail)} ${product.currency}`,
 				available: product.available,
 				search,
 				matches: tokens.every((token) => search.includes(token)),

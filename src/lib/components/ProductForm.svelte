@@ -76,6 +76,11 @@
 			/>
 			{#if errors.price}<small class="error">{errors.price}</small>{/if}
 			<small class="hint">La API ordena por precio dentro de cada categoría.</small>
+			<small class="hint">
+				Si el plato tiene dos raciones, escribe en el detalle los dos precios así:
+				“Ración de 5: 1100 CUP. Ración de 10: 2200 CUP.” El menú mostrará
+				1100-2200 CUP.
+			</small>
 		</label>
 
 		<label class="field check">

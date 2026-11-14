@@ -173,7 +173,7 @@
 							<h2 class="product-name">{product.name}</h2>
 							<p class="product-meta">
 								<span>{product.categoryLabel}</span>
-								<span class="price">{product.price} {product.currency}</span>
+								<span class="price">{product.priceLabel}</span>
 							</p>
 							<code class="slug">{product.slug}</code>
 						</div>

@@ -47,6 +47,8 @@ export interface ProductSummary {
 	categoryLabel: string;
 	price: number;
 	currency: string;
+	/** Precio simple o rango de raciones, ya formateado para la lista. */
+	priceLabel: string;
 	available: boolean;
 	/** Índice normalizado que usan el script del buscador y el filtro SSR. */
 	search: string;

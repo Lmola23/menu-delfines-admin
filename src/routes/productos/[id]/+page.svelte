@@ -1,5 +1,6 @@
 <script lang="ts">
 	import ProductForm from "$lib/components/ProductForm.svelte";
+	import { priceValue } from "$lib/price";
 	import {
 		productToValues,
 		type Category,
@@ -33,7 +34,7 @@
 		<h1>{product.name}</h1>
 		<p class="muted">
 			<code class="slug">{product.slug}</code>
-			· {product.price} {product.currency}
+			· {priceValue(product.price, product.detail)} {product.currency}
 			· {product.available ? "con stock" : "sin stock"}
 		</p>
 	</div>
