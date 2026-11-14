@@ -25,7 +25,9 @@
 	const values = $derived(form?.values ?? productToValues(data.product));
 	const temporaryCocktailCategory = $derived(
 		product.category !== "cocteles" &&
-			["mojito-delfin", "daiquiri-fresa"].includes(product.slug),
+			["mojito-delfin", "daiquiri-fresa", "coctel-camaron"].includes(
+				product.slug,
+			),
 	);
 </script>
 
