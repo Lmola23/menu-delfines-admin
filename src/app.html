@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#ffffff" />
+		<title>Delfines · Admin</title>
+		%sveltekit.head%
+	</head>
+	<body>
+		<div style="display: contents">%sveltekit.body%</div>
+		<script>
+			// Confirmación mínima para los formularios de borrado. No depende de
+			// la hidratación de Svelte: el admin se sirve como HTML + CSS.
+			document.addEventListener("submit", (event) => {
+				const form = event.target;
+				if (!(form instanceof HTMLFormElement)) return;
+				const message = form.dataset.confirm;
+				if (message && !confirm(message)) event.preventDefault();
+			});
+		</script>
+
+		<script>
+			// Buscador instantáneo, igual que el del menú público. Es JavaScript
+			// nativo: no descarga el bundle de hidratación de SvelteKit. Si el
+			// navegador no lo ejecuta, el formulario GET sigue filtrando en servidor.
+			(() => {
+				const root = document.querySelector("[data-search-root]");
+				const input = root?.querySelector("[data-search-input]");
+				if (!root || !(input instanceof HTMLInputElement)) return;
+
+				const items = Array.from(root.querySelectorAll("[data-product]")).map(
+					(element) => ({
+						element,
+						search: element.dataset.search ?? "",
+					}),
+				);
+				const filters = root.querySelector("[data-filters]");
+				const empty = root.querySelector("[data-search-empty]");
+				const status = root.querySelector("[data-search-status]");
+				const count = root.querySelector("[data-search-count]");
+				const submit = root.querySelector("[data-search-submit]");
+				const clear = root.querySelector("[data-search-clear]");
+				const queryInputs = Array.from(
+					root.querySelectorAll("[data-search-query]"),
+				);
+				const form = input.form;
+				const defaultCount = count?.dataset.defaultLabel ?? "";
+				const scopeLabel = count?.dataset.scopeLabel ?? "";
+				const clearHref = clear?.getAttribute("href") ?? null;
+
+				const normalize = (value) =>
+					value
+						.normalize("NFD")
+						.replace(/[\u0300-\u036f]/g, "")
+						.toLowerCase()
+						.replace(/\s+/g, " ")
+						.trim();
+
+				const apply = () => {
+					const raw = input.value;
+					const tokens = normalize(raw).split(" ").filter(Boolean);
+					const searching = tokens.length > 0;
+					let visible = 0;
+
+					for (const { element, search } of items) {
+						const matches =
+							!searching || tokens.every((token) => search.includes(token));
+						element.hidden = !matches;
+						if (matches) visible += 1;
+					}
+
+					for (const queryInput of queryInputs) {
+						queryInput.value = raw.trim();
+					}
+
+					if (filters) filters.hidden = searching;
+					if (empty) empty.hidden = !searching || visible > 0;
+					if (submit) submit.hidden = raw.length > 0;
+					if (clear) clear.hidden = raw.length === 0;
+
+					if (count) {
+						count.textContent = searching
+							? `${visible} ${visible === 1 ? "resultado" : "resultados"}${scopeLabel}`
+							: defaultCount;
+					}
+
+					if (status) {
+						status.textContent = !searching
+							? ""
+							: visible === 0
+								? `Sin resultados para "${raw.trim()}"`
+								: `${visible} ${visible === 1 ? "producto encontrado" : "productos encontrados"}`;
+					}
+
+					// Si se borra la consulta a mano, la URL vuelve al listado sin `q`.
+					if (!searching && clearHref) {
+						history.replaceState({}, "", clearHref);
+					}
+				};
+
+				const clearSearch = () => {
+					input.value = "";
+					apply();
+					if (clearHref) history.replaceState({}, "", clearHref);
+					input.focus();
+				};
+
+				input.addEventListener("input", apply);
+				input.addEventListener("search", () => {
+					if (input.value === "") clearSearch();
+					else apply();
+				});
+
+				input.addEventListener("keydown", (event) => {
+					if (event.key === "Escape" && input.value !== "") {
+						event.preventDefault();
+						clearSearch();
+					}
+				});
+
+				clear?.addEventListener("click", (event) => {
+					event.preventDefault();
+					clearSearch();
+				});
+
+				form?.addEventListener("submit", (event) => {
+					event.preventDefault();
+					const value = input.value.trim();
+					const url = new URL(location.href);
+					if (value) url.searchParams.set("q", value);
+					else url.searchParams.delete("q");
+					history.replaceState({}, "", url);
+					apply();
+				});
+
+				apply();
+			})();
+		</script>
+	</body>
+</html>
