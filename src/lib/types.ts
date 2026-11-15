@@ -19,6 +19,8 @@ export interface Product {
 	imageUrl: string;
 	/** Variante pequeña ya preparada por el API para el admin. */
 	imagePreviewUrl?: string;
+	/** Variante mínima para la lista. */
+	imageThumbUrl?: string;
 	createdAt: string;
 	updatedAt: string;
 }
@@ -53,8 +55,8 @@ export interface ProductSummary {
 	currency: string;
 	/** Precio simple o rango de raciones, ya formateado para la lista. */
 	priceLabel: string;
-	/** Variante pequeña ya preparada por el API; vacía si no hay foto. */
-	imagePreviewUrl: string;
+	/** Variante mínima ya preparada por el API; vacía si no hay foto. */
+	imageThumbUrl: string;
 	available: boolean;
 	/** Índice normalizado que usan el script del buscador y el filtro SSR. */
 	search: string;

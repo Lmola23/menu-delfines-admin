@@ -170,10 +170,10 @@
 				>
 					<div class="product-head">
 						<div class="product-info">
-							{#if product.imagePreviewUrl}
+							{#if product.imageThumbUrl}
 								<img
 									class="product-thumb"
-									src={product.imagePreviewUrl}
+									src={product.imageThumbUrl}
 									alt=""
 									width="60"
 									height="60"
