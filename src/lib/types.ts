@@ -53,6 +53,8 @@ export interface ProductSummary {
 	currency: string;
 	/** Precio simple o rango de raciones, ya formateado para la lista. */
 	priceLabel: string;
+	/** Variante pequeña ya preparada por el API; vacía si no hay foto. */
+	imagePreviewUrl: string;
 	available: boolean;
 	/** Índice normalizado que usan el script del buscador y el filtro SSR. */
 	search: string;

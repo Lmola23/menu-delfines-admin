@@ -169,13 +169,30 @@
 					hidden={data.query.length > 0 && !product.matches}
 				>
 					<div class="product-head">
-						<div>
-							<h2 class="product-name">{product.name}</h2>
-							<p class="product-meta">
-								<span>{product.categoryLabel}</span>
-								<span class="price">{product.priceLabel}</span>
-							</p>
-							<code class="slug">{product.slug}</code>
+						<div class="product-info">
+							{#if product.imagePreviewUrl}
+								<img
+									class="product-thumb"
+									src={product.imagePreviewUrl}
+									alt=""
+									width="60"
+									height="60"
+									loading="lazy"
+									decoding="async"
+								/>
+							{:else}
+								<span class="product-thumb product-thumb-empty" aria-hidden="true">
+									Sin foto
+								</span>
+							{/if}
+							<div class="product-copy">
+								<h2 class="product-name">{product.name}</h2>
+								<p class="product-meta">
+									<span>{product.categoryLabel}</span>
+									<span class="price">{product.priceLabel}</span>
+								</p>
+								<code class="slug">{product.slug}</code>
+							</div>
 						</div>
 						<span class="badge" class:ok={product.available} class:no={!product.available}>
 							{product.available ? "Disponible" : "Sin stock"}

@@ -87,6 +87,7 @@ export const load = async ({ url }) => {
 				price: product.price,
 				currency: product.currency,
 				priceLabel: `${priceValue(product.price, product.detail)} ${product.currency}`,
+				imagePreviewUrl: product.imagePreviewUrl ?? "",
 				available: product.available,
 				search,
 				matches: tokens.every((token) => search.includes(token)),
