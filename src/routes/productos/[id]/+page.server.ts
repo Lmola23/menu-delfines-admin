@@ -1,5 +1,6 @@
 import { fail, redirect } from "@sveltejs/kit";
 
+import { API_URL } from "$lib/config";
 import { valuesFromForm } from "$lib/forms";
 import {
 	deleteProduct,
@@ -18,8 +19,11 @@ export const load = async ({ params, url }) => {
 	return {
 		product,
 		categories,
+		apiUrl: API_URL,
 		saved: url.searchParams.has("guardado"),
 		created: url.searchParams.has("creado"),
+		foto: url.searchParams.get("foto") ?? "",
+		fotoError: url.searchParams.get("mensaje") ?? "",
 	};
 };
 

@@ -15,6 +15,10 @@ export interface Product {
 	detail: string;
 	ingredients: string[];
 	available: boolean;
+	imageId: string;
+	imageUrl: string;
+	/** Variante pequeña ya preparada por el API para el admin. */
+	imagePreviewUrl?: string;
 	createdAt: string;
 	updatedAt: string;
 }

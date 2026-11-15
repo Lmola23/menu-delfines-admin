@@ -551,6 +551,37 @@ code {
 	margin: 0;
 }
 
+.photo-block {
+	margin-bottom: 4px;
+}
+
+.photo-preview,
+.photo-empty {
+	display: block;
+	width: 100%;
+	aspect-ratio: 1;
+	margin: 10px 0 12px;
+	border: 1px solid var(--line);
+	border-radius: var(--r);
+	background: #f5f5f5;
+	object-fit: cover;
+}
+
+.photo-empty {
+	display: grid;
+	place-items: center;
+	color: var(--muted);
+	font-size: 13px;
+}
+
+.photo-form {
+	margin-bottom: 8px;
+}
+
+.photo-block .hint {
+	margin-top: 8px;
+}
+
 .side hr {
 	margin: 20px 0;
 	border: 0;

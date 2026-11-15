@@ -11,12 +11,6 @@ import { normalize } from "$lib/normalize";
 import { priceValue } from "$lib/price";
 import type { ProductSummary } from "$lib/types";
 
-const COCKTAIL_SLUGS = new Set([
-	"mojito-delfin",
-	"daiquiri-fresa",
-	"coctel-camaron",
-]);
-
 type Estado = "todos" | "disponibles" | "agotados";
 
 function parseEstado(value: string | null): Estado {
@@ -76,9 +70,7 @@ export const load = async ({ url }) => {
 			return true;
 		})
 		.map((product) => {
-			const categoryLabel = COCKTAIL_SLUGS.has(product.slug)
-				? "Cócteles"
-				: (labels.get(product.category) ?? product.category);
+			const categoryLabel = labels.get(product.category) ?? product.category;
 			const search = searchable(
 				product.name,
 				product.description,

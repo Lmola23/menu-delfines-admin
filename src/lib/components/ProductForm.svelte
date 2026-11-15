@@ -37,7 +37,7 @@
 				autocomplete="off"
 			/>
 			{#if errors.slug}<small class="error">{errors.slug}</small>{/if}
-			<small class="hint">Debe coincidir con el archivo en src/assets, sin extensión.</small>
+			<small class="hint">Identifica el producto en la URL y en el seed. La foto se sube desde esta ficha.</small>
 		</label>
 
 		<label class="field">

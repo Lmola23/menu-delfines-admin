@@ -32,7 +32,7 @@
 <div class="page-head">
 	<div>
 		<h1>Nuevo producto</h1>
-		<p class="muted">El slug debe coincidir con el nombre de la foto en src/assets.</p>
+		<p class="muted">Después de crearlo podrás subirle la foto.</p>
 	</div>
 	<a class="btn ghost" href="/productos">Volver</a>
 </div>
