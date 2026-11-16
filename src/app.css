@@ -429,8 +429,26 @@ code {
 	color: var(--danger);
 }
 
-.product.off .product-name {
+.product.off {
+	margin: 8px -10px;
+	padding: 14px 10px;
+	border-bottom: 0;
+	border-radius: 10px;
+	background: #f6f6f6;
+}
+
+.product.off .product-info {
+	opacity: 0.62;
+}
+
+.product.off .product-name,
+.product.off .price {
 	color: var(--muted);
+}
+
+.product.off .badge.no {
+	background: #e8e8e8;
+	color: #6f6f6f;
 }
 
 .product-actions {

@@ -136,5 +136,21 @@
 				apply();
 			})();
 		</script>
+
+		<script>
+			// La flecha de volver arriba solo aparece cuando el encabezado de la
+			// lista ya no está visible. IntersectionObserver evita un listener de
+			// scroll y funciona con el SSR, sin hidratación.
+			(() => {
+				const button = document.querySelector("[data-scroll-top]");
+				const target = document.querySelector("[data-scroll-top-target]");
+				if (!button || !target || !("IntersectionObserver" in window)) return;
+
+				const observer = new IntersectionObserver(([entry]) => {
+					button.hidden = entry.isIntersecting;
+				});
+				observer.observe(target);
+			})();
+		</script>
 	</body>
 </html>

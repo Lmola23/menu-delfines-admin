@@ -60,7 +60,7 @@
 </svelte:head>
 
 <div class="products-page" data-search-root>
-	<div class="page-head">
+	<div class="page-head" data-scroll-top-target>
 		<div>
 			<h1>Productos</h1>
 			<p
@@ -250,7 +250,13 @@
 	{/if}
 
 	<div class="floating-actions">
-		<a class="fab secondary" href="#top" aria-label="Volver arriba">
+		<a
+			class="fab secondary"
+			href="#top"
+			aria-label="Volver arriba"
+			data-scroll-top
+			hidden
+		>
 			<svg
 				viewBox="0 0 24 24"
 				fill="none"
