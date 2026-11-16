@@ -51,6 +51,27 @@ export async function listCategories(): Promise<Category[]> {
 	return request<Category[]>("/api/categories");
 }
 
+export function createCategory(label: string): Promise<Category> {
+	return request<Category>("/api/categories", {
+		method: "POST",
+		body: JSON.stringify({ label }),
+	});
+}
+
+export function updateCategory(id: string, label: string): Promise<Category> {
+	return request<Category>(`/api/categories/${encodeURIComponent(id)}`, {
+		method: "PUT",
+		body: JSON.stringify({ label }),
+	});
+}
+
+export function reorderCategories(ids: string[]): Promise<Category[]> {
+	return request<Category[]>("/api/categories/order", {
+		method: "PATCH",
+		body: JSON.stringify({ ids }),
+	});
+}
+
 export function getProduct(id: number | string): Promise<Product> {
 	return request<Product>(`/api/products/${id}`);
 }

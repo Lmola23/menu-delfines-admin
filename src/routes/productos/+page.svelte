@@ -53,6 +53,33 @@
 	const clearHref = $derived(
 		data.filter === "todos" ? "/productos" : `/productos?estado=${data.filter}`,
 	);
+
+	type ProductGroup = {
+		id: string;
+		label: string;
+		products: ProductSummary[];
+	};
+
+	const groups = $derived.by(() => {
+		const result: ProductGroup[] = [];
+		const byCategory = new Map<string, ProductGroup>();
+
+		for (const product of data.products) {
+			let group = byCategory.get(product.category);
+			if (!group) {
+				group = {
+					id: product.category,
+					label: product.categoryLabel,
+					products: [],
+				};
+				byCategory.set(product.category, group);
+				result.push(group);
+			}
+			group.products.push(product);
+		}
+
+		return result;
+	});
 </script>
 
 <svelte:head>
@@ -158,86 +185,111 @@
 			No hay productos en este filtro. <a href="/productos">Ver todos</a>
 		</p>
 	{:else}
-		<ul class="products">
-			{#each data.products as product (product.id)}
-				<li
-					class="product"
-					class:off={!product.available}
-					data-product
-					data-search={product.search}
-					hidden={data.query.length > 0 && !product.matches}
-				>
-					<div class="product-head">
-						<div class="product-info">
-							{#if product.imageThumbUrl}
-								<img
-									class="product-thumb"
-									src={product.imageThumbUrl}
-									alt=""
-									width="60"
-									height="60"
-									loading="lazy"
-									decoding="async"
-								/>
-							{:else}
-								<span class="product-thumb product-thumb-empty" aria-hidden="true">
-									Sin foto
-								</span>
-							{/if}
-							<div class="product-copy">
-								<h2 class="product-name">{product.name}</h2>
-								<p class="product-meta">
-									<span>{product.categoryLabel}</span>
-									<span class="price">{product.priceLabel}</span>
-								</p>
-							</div>
-						</div>
-						<span class="badge" class:ok={product.available} class:no={!product.available}>
-							{product.available ? "Disponible" : "Sin stock"}
-						</span>
-					</div>
+		{#each groups as group (group.id)}
+			{@const groupMatches =
+				data.query.length === 0 ||
+				group.products.some((product) => product.matches)}
+			<section
+				class="product-group"
+				data-category-group
+				hidden={!groupMatches}
+			>
+				<div class="category-heading">
+					<h2>{group.label}</h2>
+				</div>
 
-					<div class="product-actions">
-						<form method="POST" action="?/toggle">
-							<input type="hidden" name="id" value={product.id} />
-							<input type="hidden" name="estado" value={data.filter} />
-							<input
-								type="hidden"
-								name="q"
-								value={data.query}
-								data-search-query
-							/>
-							<input
-								type="hidden"
-								name="available"
-								value={product.available ? "false" : "true"}
-							/>
-							<button class="btn small" type="submit">
-								{product.available ? "Ocultar" : "Mostrar"}
-							</button>
-						</form>
-
-						<a class="btn small ghost" href={`/productos/${product.id}`}>Editar</a>
-
-						<form
-							method="POST"
-							action="?/delete"
-							data-confirm={`¿Eliminar "${product.name}"?`}
+				<ul class="products">
+					{#each group.products as product (product.id)}
+						<li
+							class="product"
+							class:off={!product.available}
+							data-product
+							data-search={product.search}
+							hidden={data.query.length > 0 && !product.matches}
 						>
-							<input type="hidden" name="id" value={product.id} />
-							<input type="hidden" name="estado" value={data.filter} />
-							<input
-								type="hidden"
-								name="q"
-								value={data.query}
-								data-search-query
-							/>
-							<button class="btn small danger" type="submit">Eliminar</button>
-						</form>
-					</div>
-				</li>
-			{/each}
-		</ul>
+							<div class="product-head">
+								<div class="product-info">
+									{#if product.imageThumbUrl}
+										<img
+											class="product-thumb"
+											src={product.imageThumbUrl}
+											alt=""
+											width="60"
+											height="60"
+											loading="lazy"
+											decoding="async"
+										/>
+									{:else}
+										<span
+											class="product-thumb product-thumb-empty"
+											aria-hidden="true"
+										>
+											Sin foto
+										</span>
+									{/if}
+									<div class="product-copy">
+										<h2 class="product-name">{product.name}</h2>
+										<p class="product-meta">
+											<span class="price">{product.priceLabel}</span>
+										</p>
+									</div>
+								</div>
+								<span
+									class="badge"
+									class:ok={product.available}
+									class:no={!product.available}
+								>
+									{product.available ? "Disponible" : "Sin stock"}
+								</span>
+							</div>
+
+							<div class="product-actions">
+								<form method="POST" action="?/toggle">
+									<input type="hidden" name="id" value={product.id} />
+									<input type="hidden" name="estado" value={data.filter} />
+									<input
+										type="hidden"
+										name="q"
+										value={data.query}
+										data-search-query
+									/>
+									<input
+										type="hidden"
+										name="available"
+										value={product.available ? "false" : "true"}
+									/>
+									<button class="btn small" type="submit">
+										{product.available ? "Ocultar" : "Mostrar"}
+									</button>
+								</form>
+
+								<a class="btn small ghost" href={`/productos/${product.id}`}>
+									Editar
+								</a>
+
+								<form
+									method="POST"
+									action="?/delete"
+									data-confirm={`¿Eliminar "${product.name}"?`}
+								>
+									<input type="hidden" name="id" value={product.id} />
+									<input type="hidden" name="estado" value={data.filter} />
+									<input
+										type="hidden"
+										name="q"
+										value={data.query}
+										data-search-query
+									/>
+									<button class="btn small danger" type="submit">
+										Eliminar
+									</button>
+								</form>
+							</div>
+						</li>
+					{/each}
+				</ul>
+			</section>
+		{/each}
 
 		<div
 			class="empty search-empty"

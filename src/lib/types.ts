@@ -43,6 +43,13 @@ export interface FormState {
 	errors?: Record<string, string>;
 }
 
+export interface CategoryFormState {
+	message?: string;
+	success?: boolean;
+	values?: { id?: string; label?: string };
+	errors?: Record<string, string>;
+}
+
 /** Datos mínimos que necesita la lista para no enviar la ficha completa al móvil. */
 export interface ProductSummary {
 	id: number;

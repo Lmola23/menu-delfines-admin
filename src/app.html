@@ -34,6 +34,12 @@
 						search: element.dataset.search ?? "",
 					}),
 				);
+				const categoryGroups = Array.from(
+					root.querySelectorAll("[data-category-group]"),
+				).map((element) => ({
+					element,
+					products: Array.from(element.querySelectorAll("[data-product]")),
+				}));
 				const filters = root.querySelector("[data-filters]");
 				const empty = root.querySelector("[data-search-empty]");
 				const status = root.querySelector("[data-search-status]");
@@ -67,6 +73,14 @@
 							!searching || tokens.every((token) => search.includes(token));
 						element.hidden = !matches;
 						if (matches) visible += 1;
+					}
+
+					// La cabecera de una categoría solo se muestra si queda al menos
+					// un producto visible dentro de ella.
+					for (const group of categoryGroups) {
+						group.element.hidden = !group.products.some(
+							(product) => !product.hidden,
+						);
 					}
 
 					for (const queryInput of queryInputs) {
