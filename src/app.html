@@ -20,23 +20,58 @@
 		</script>
 
 		<script>
-			// Menú de secciones nativo. Se cierra al tocar fuera o con Escape,
-			// sin depender de la hidratación de Svelte.
+			// Menú de secciones nativo. Se cierra al tocar fuera, con el fondo
+			// oscuro, con la X o con Escape, sin hidratar el resto del admin.
 			(() => {
 				const menu = document.querySelector("[data-admin-menu]");
 				if (!(menu instanceof HTMLDetailsElement)) return;
 
+				const trigger = menu.querySelector("summary");
+				const panel = menu.querySelector(".admin-menu-panel");
+				const firstLink = menu.querySelector(".admin-menu-links a");
+
 				document.addEventListener("click", (event) => {
 					if (!menu.open) return;
-					if (event.target instanceof Node && !menu.contains(event.target)) {
+					if (!(event.target instanceof Element)) return;
+					if (event.target.closest("[data-menu-close]")) {
 						menu.open = false;
+						return;
 					}
+					if (!menu.contains(event.target)) menu.open = false;
 				});
 
 				document.addEventListener("keydown", (event) => {
 					if (event.key !== "Escape" || !menu.open) return;
 					menu.open = false;
-					menu.querySelector("summary")?.focus();
+					trigger?.focus();
+				});
+
+				menu.addEventListener("keydown", (event) => {
+					if (event.key !== "Tab" || !menu.open || !panel) return;
+
+					const focusable = Array.from(
+						panel.querySelectorAll("a, button"),
+					).filter((element) => !element.hasAttribute("disabled"));
+					if (focusable.length === 0) return;
+
+					const first = focusable[0];
+					const last = focusable[focusable.length - 1];
+					if (event.shiftKey && document.activeElement === first) {
+						event.preventDefault();
+						last.focus();
+					} else if (!event.shiftKey && document.activeElement === last) {
+						event.preventDefault();
+						first.focus();
+					}
+				});
+
+				menu.addEventListener("toggle", () => {
+					document.body.style.overflow = menu.open ? "hidden" : "";
+					if (menu.open) {
+						firstLink?.focus();
+					} else {
+						trigger?.focus();
+					}
 				});
 			})();
 		</script>
