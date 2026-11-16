@@ -106,35 +106,85 @@ code {
 }
 
 /* --- navegación --- */
-.admin-nav {
-	display: flex;
-	gap: 22px;
-	padding: 0 20px;
+.admin-bar {
+	position: sticky;
+	top: 0;
+	z-index: 30;
+	padding: 8px 20px;
 	border-bottom: 1px solid var(--line);
 	background: var(--surface);
 }
 
-.admin-nav a {
+.admin-menu {
 	position: relative;
-	padding: 14px 0 12px;
+	width: fit-content;
+}
+
+.admin-menu-trigger {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	min-height: 40px;
+	padding: 0 12px;
+	border: 1px solid var(--line);
+	border-radius: var(--r);
+	background: var(--surface);
+	color: var(--ink);
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	list-style: none;
+	user-select: none;
+}
+
+.admin-menu-trigger::-webkit-details-marker {
+	display: none;
+}
+
+.admin-menu-trigger svg {
+	width: 20px;
+	height: 20px;
+}
+
+.admin-menu[open] .admin-menu-trigger {
+	border-color: #d7d7d7;
+	background: #fafafa;
+}
+
+.admin-menu-panel {
+	position: absolute;
+	top: calc(100% + 8px);
+	left: 0;
+	z-index: 40;
+	display: grid;
+	min-width: 210px;
+	padding: 6px;
+	border: 1px solid var(--line);
+	border-radius: 12px;
+	background: var(--surface);
+	box-shadow: 0 14px 38px rgb(0 0 0 / 14%);
+}
+
+.admin-menu:not([open]) .admin-menu-panel {
+	display: none;
+}
+
+.admin-menu-panel a {
+	padding: 11px 12px;
+	border-radius: 8px;
 	color: var(--muted);
 	font-size: 14px;
 	font-weight: 600;
 }
 
-.admin-nav a[aria-current="page"] {
-	color: var(--ink);
+.admin-menu-panel a:hover,
+.admin-menu-panel a:focus-visible {
+	background: #f5f5f5;
 }
 
-.admin-nav a[aria-current="page"]::after {
-	content: "";
-	position: absolute;
-	right: 0;
-	bottom: -1px;
-	left: 0;
-	height: 2px;
-	border-radius: 2px;
-	background: var(--brand);
+.admin-menu-panel a[aria-current="page"] {
+	background: var(--brand-soft);
+	color: var(--ink);
 }
 
 /* --- cabecera de página --- */

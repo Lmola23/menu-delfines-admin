@@ -20,6 +20,28 @@
 		</script>
 
 		<script>
+			// Menú de secciones nativo. Se cierra al tocar fuera o con Escape,
+			// sin depender de la hidratación de Svelte.
+			(() => {
+				const menu = document.querySelector("[data-admin-menu]");
+				if (!(menu instanceof HTMLDetailsElement)) return;
+
+				document.addEventListener("click", (event) => {
+					if (!menu.open) return;
+					if (event.target instanceof Node && !menu.contains(event.target)) {
+						menu.open = false;
+					}
+				});
+
+				document.addEventListener("keydown", (event) => {
+					if (event.key !== "Escape" || !menu.open) return;
+					menu.open = false;
+					menu.querySelector("summary")?.focus();
+				});
+			})();
+		</script>
+
+		<script>
 			// Buscador instantáneo, igual que el del menú público. Es JavaScript
 			// nativo: no descarga el bundle de hidratación de SvelteKit. Si el
 			// navegador no lo ejecuta, el formulario GET sigue filtrando en servidor.
