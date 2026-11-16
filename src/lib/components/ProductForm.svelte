@@ -8,6 +8,8 @@
 		categories: Category[];
 		submitLabel?: string;
 		cancelHref?: string;
+		enctype?: "application/x-www-form-urlencoded" | "multipart/form-data";
+		showPhoto?: boolean;
 	}
 
 	let {
@@ -17,29 +19,17 @@
 		categories,
 		submitLabel = "Guardar",
 		cancelHref = "/productos",
+		enctype,
+		showPhoto = false,
 	}: Props = $props();
 </script>
 
-<form method="POST" {action} class="form">
+<form method="POST" {action} {enctype} class="form">
 	{#if errors.general}
 		<p class="alert" role="alert">{errors.general}</p>
 	{/if}
 
 	<div class="grid">
-		<label class="field">
-			<span>Slug / archivo</span>
-			<input
-				name="slug"
-				value={values.slug}
-				required
-				pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
-				placeholder="croquetas-jamon"
-				autocomplete="off"
-			/>
-			{#if errors.slug}<small class="error">{errors.slug}</small>{/if}
-			<small class="hint">Identifica el producto en la URL y en el seed. La foto se sube desde esta ficha.</small>
-		</label>
-
 		<label class="field">
 			<span>Nombre</span>
 			<input name="name" value={values.name} required />
@@ -107,6 +97,20 @@
 			value={values.ingredients.join("\n")}
 		></textarea>
 	</label>
+
+	{#if showPhoto}
+		<label class="field">
+			<span>Foto (opcional)</span>
+			<input
+				type="file"
+				name="image"
+				accept="image/jpeg,image/png,image/webp,image/avif"
+			/>
+			<small class="hint">
+				Puedes subirla ahora o después desde la ficha del producto.
+			</small>
+		</label>
+	{/if}
 
 	<div class="form-actions">
 		<button class="btn primary" type="submit">{submitLabel}</button>

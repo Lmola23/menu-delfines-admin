@@ -56,10 +56,10 @@
 </script>
 
 <svelte:head>
-	<title>Productos · Delfines admin</title>
+	<title>Productos</title>
 </svelte:head>
 
-<div data-search-root>
+<div class="products-page" data-search-root>
 	<div class="page-head">
 		<div>
 			<h1>Productos</h1>
@@ -72,7 +72,6 @@
 				{countLabel}
 			</p>
 		</div>
-		<a class="btn primary" href="/productos/nuevo">+ Nuevo</a>
 	</div>
 
 	{#if form?.message}
@@ -91,7 +90,7 @@
 			type="search"
 			name="q"
 			value={data.query}
-			placeholder="Buscar producto, slug o categoría"
+			placeholder="Buscar producto o categoría"
 			autocomplete="off"
 			enterkeyhint="search"
 		/>
@@ -191,7 +190,6 @@
 									<span>{product.categoryLabel}</span>
 									<span class="price">{product.priceLabel}</span>
 								</p>
-								<code class="slug">{product.slug}</code>
 							</div>
 						</div>
 						<span class="badge" class:ok={product.available} class:no={!product.available}>
@@ -250,4 +248,35 @@
 			<p>Prueba con otro nombre o revisa la ortografía.</p>
 		</div>
 	{/if}
+
+	<div class="floating-actions">
+		<a class="fab secondary" href="#top" aria-label="Volver arriba">
+			<svg
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				aria-hidden="true"
+			>
+				<path d="M12 19V5"></path>
+				<path d="m6 11 6-6 6 6"></path>
+			</svg>
+		</a>
+		<a class="fab" href="/productos/nuevo" aria-label="Nuevo producto">
+			<svg
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				aria-hidden="true"
+			>
+				<path d="M12 5v14"></path>
+				<path d="M5 12h14"></path>
+			</svg>
+		</a>
+	</div>
 </div>

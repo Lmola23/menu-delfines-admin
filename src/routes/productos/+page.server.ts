@@ -33,14 +33,13 @@ function redirectToList(estado: Estado, query: string): never {
 	throw redirect(303, listUrl(estado, query));
 }
 
-/** Texto que indexa el buscador: nombre, descripción, slug y categoría. */
+/** Texto que indexa el buscador: nombre, descripción y categoría. */
 function searchable(
 	name: string,
 	description: string,
-	slug: string,
 	categoryLabel: string,
 ): string {
-	return normalize(`${name} ${description} ${slug} ${categoryLabel}`);
+	return normalize(`${name} ${description} ${categoryLabel}`);
 }
 
 export const load = async ({ url }) => {
@@ -71,16 +70,10 @@ export const load = async ({ url }) => {
 		})
 		.map((product) => {
 			const categoryLabel = labels.get(product.category) ?? product.category;
-			const search = searchable(
-				product.name,
-				product.description,
-				product.slug,
-				categoryLabel,
-			);
+			const search = searchable(product.name, product.description, categoryLabel);
 
 			return {
 				id: product.id,
-				slug: product.slug,
 				name: product.name,
 				category: product.category,
 				categoryLabel,

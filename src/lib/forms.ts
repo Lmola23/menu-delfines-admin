@@ -11,7 +11,6 @@ export function valuesFromForm(form: FormData): ProductInput {
 	};
 
 	return {
-		slug: text("slug").toLowerCase(),
 		name: text("name"),
 		category: text("category"),
 		price: number("price") ?? 0,

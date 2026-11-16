@@ -6,7 +6,6 @@ import {
 	deleteProduct,
 	getProduct,
 	listCategories,
-	setAvailability,
 	updateProduct,
 } from "$lib/server/api";
 import { errorFields, messageOf } from "$lib/server/errors";
@@ -39,17 +38,6 @@ export const actions = {
 		}
 
 		throw redirect(303, `/productos/${product.id}?guardado=1`);
-	},
-
-	toggle: async ({ params, request }) => {
-		const form = await request.formData();
-		const available = form.get("available") === "true";
-		try {
-			await setAvailability(params.id, available);
-		} catch (error) {
-			return fail(400, { message: messageOf(error) });
-		}
-		throw redirect(303, `/productos/${params.id}`);
 	},
 
 	delete: async ({ params }) => {

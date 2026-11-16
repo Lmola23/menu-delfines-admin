@@ -29,15 +29,14 @@
 </script>
 
 <svelte:head>
-	<title>{product.name} · Delfines admin</title>
+	<title>{product.name}</title>
 </svelte:head>
 
 <div class="page-head">
 	<div>
 		<h1>{product.name}</h1>
 		<p class="muted">
-			<code class="slug">{product.slug}</code>
-			· {priceValue(product.price, product.detail)} {product.currency}
+			{priceValue(product.price, product.detail)} {product.currency}
 			· {product.available ? "con stock" : "sin stock"}
 		</p>
 	</div>
@@ -137,26 +136,6 @@
 				optimizadas para la carta.
 			</p>
 		</section>
-
-		<hr />
-
-		<h2>Stock</h2>
-		<p class="muted">
-			{product.available
-				? "El producto se muestra en el menú público."
-				: "El producto está oculto en el menú público."}
-		</p>
-
-		<form method="POST" action="?/toggle" class="side-action">
-			<input
-				type="hidden"
-				name="available"
-				value={product.available ? "false" : "true"}
-			/>
-			<button class="btn full" type="submit">
-				{product.available ? "Ocultar del menú" : "Mostrar en el menú"}
-			</button>
-		</form>
 
 		<hr />
 

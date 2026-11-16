@@ -26,7 +26,6 @@ export interface Product {
 }
 
 export interface ProductInput {
-	slug: string;
 	name: string;
 	category: string;
 	price: number;
@@ -47,7 +46,6 @@ export interface FormState {
 /** Datos mínimos que necesita la lista para no enviar la ficha completa al móvil. */
 export interface ProductSummary {
 	id: number;
-	slug: string;
 	name: string;
 	category: string;
 	categoryLabel: string;
@@ -66,7 +64,6 @@ export interface ProductSummary {
 
 export function productToValues(product: Product): ProductInput {
 	return {
-		slug: product.slug,
 		name: product.name,
 		category: product.category,
 		price: product.price,
